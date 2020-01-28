@@ -1,0 +1,14 @@
+{
+  "name": "prodops-lab",
+  "version": "1.0.0",
+  "description": "Practice App in Node.js on Docker",
+  "author": "Richard Hiraldo <rhiraldo@diligent.com>",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "mysql": "2.18.1"
+  }
+}
