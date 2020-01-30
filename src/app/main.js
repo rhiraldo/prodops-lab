@@ -24,8 +24,8 @@ function query_database(req,res) {
   pool.query(sqlQuery,function(err,rows){
   res.setHeader( 'X-Powered-By', 'ProdOps Awesomeness' );
   if(err) {
-      console.log({'error': true, 'component': 'database', 'message': 'Error occurred: '+err});
-      return res.status(500).json({'error': true, 'component': 'database', 'message': 'Error occurred: '+err});
+      console.log({'level': 'ERROR', 'component': 'database', 'message': 'Error occurred: '+err});
+      return res.status(500).json({'level': 'ERROR', 'component': 'database', 'message': 'Error occurred: '+err});
   }
           //connection will be released as well.
           res.status(200).json(rows);
@@ -34,13 +34,14 @@ function query_database(req,res) {
 
 function healthcheck(req,res) {
   res.setHeader( 'X-Powered-By', 'ProdOps Awesomeness' );
+  res.setHeader('Last-Modified', (new Date()).toUTCString());
   pool.getConnection(function(err){
   if(err) {
-    console.log({'error': true, 'component': 'database', 'message': 'Error occurred: '+err});
-    return res.status(500).json({'error': true, 'component': 'database', 'message': 'Error occurred: '+err});
+    console.log({'level': 'ERROR', 'component': 'database', 'message': 'Error occurred: '+err});
+    return res.status(500).json({'level': 'ERROR', 'component': 'database', 'message': 'Error occurred: '+err});
   }
-  console.log({'error': false, 'component': 'database', 'message': 'success'})
-  res.status(200).json({'error': false, 'component': 'database', 'message': 'success'});
+  console.log({'level': 'INFO', 'component': 'database', 'message': 'success'})
+  res.status(200).json({'level': 'INFO', 'component': 'database', 'message': 'success'});
 });
 }
 
