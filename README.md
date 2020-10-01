@@ -18,7 +18,7 @@
 2. Containerize the app.
 3. Build docker image and push to Artifactory.
 4. Create helm charts for prodops-lab.
-5. Deploy the application Kubernetes.
+5. Deploy the application to Kubernetes.
 6. *Application needs to be live and running.*
 7. Troubleshooting and Debugging.
 
@@ -35,7 +35,7 @@
 
     # Install app dependencies
     # A wildcard is used to ensure both package.json AND 
-    package-lock.json are copied
+    # package-lock.json are copied
     # where available (npm@5+)
     COPY package*.json ./
 
