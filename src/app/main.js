@@ -9,6 +9,11 @@ const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_NAME = process.env.DB_NAME || 'prodops';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD;
+const REDIS_PORT = process.env.REDIS_PORT || '6379';
+const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
+
+const redis = require("redis");
+const client = redis.createClient(REDIS_PORT,REDIS_HOST);
 
 var pool      =    mysql.createPool({
     connectionLimit : 100, //important
@@ -32,6 +37,21 @@ function query_database(req,res) {
   });
 }
 
+function get_redis(req,res) {
+  client.on("error", function(error) {
+    console.error(error);
+  });
+   
+  client.set('time', new Date().toUTCString(), function(err, reply) {
+    console.log('How did Redis value store do? '+reply);
+  });
+  client.get('time', function(err, reply) {
+    console.log('New time stored in Redis server ' + REDIS_HOST +' : '+reply);
+    res.send('New time stored in Redis server ' + REDIS_HOST +' : '+reply)
+});
+
+}
+
 function healthcheck(req,res) {
   res.setHeader( 'X-Powered-By', 'ProdOps Awesomeness' );
   res.setHeader('Last-Modified', (new Date()).toUTCString());
@@ -52,6 +72,10 @@ app.get('/', (req, res) => {
 
 app.get("/clients",function(req,res){-
         query_database(req,res);
+});
+
+app.get("/redis",function(req,res){-
+  get_redis(req,res);
 });
 
 app.get("/check/health",function(req,res){-
